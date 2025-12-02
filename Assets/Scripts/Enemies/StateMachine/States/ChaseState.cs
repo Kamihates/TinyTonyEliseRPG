@@ -9,7 +9,11 @@ namespace TinyRPG.Enemies.StateMachine.States
 
         public ChaseState(Enemy e) => enemy = e;
 
-        public void OnEnter() { }
+        public void OnEnter()
+        {
+            enemy.agent.speed = enemy.stats.chaseSpeed;
+            enemy.animator.SetBool("isRunning", true);
+        }
 
         public void OnUpdate()
         {
@@ -28,13 +32,14 @@ namespace TinyRPG.Enemies.StateMachine.States
                 return;
             }
 
-            // Si le joueur n'est plus détecté, revenir à l'état de patrouille
-            enemy.stateMachine.ChangeState(new PatrolState(enemy));
-
             // Déplacer l'ennemi vers le joueur
-            enemy.agent.SetDestination(enemy.targetPlayer.position);
+            enemy.agent.SetDestination(enemy.targetPlayer.transform.position);
         }
 
-        public void OnExit() { }
+        public void OnExit()
+        {
+            enemy.agent.speed = enemy.stats.moveSpeed;
+            enemy.animator.SetBool("isRunning", false);
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace TinyRPG.Enemies.Core
         [Header("Patrol Waypoints")] public Transform[] waypoints;
 
         public NavMeshAgent agent { get; private set; }
-        public PlayerMovement targetPlayer { get; private set; }
+        public PlayerMoveController targetPlayer { get; private set; }
         public EnemyStateMachine stateMachine { get; private set; }
 
         public Animator animator { get; private set; }
@@ -42,18 +42,20 @@ namespace TinyRPG.Enemies.Core
 
         private void OnTriggerEnter(Collider other)
         {
-/*            if( other.GetComponent<PlayerMovement>() != null);
+            PlayerMoveController player = other.GetComponentInParent<PlayerMoveController>();
+            if (player != null)
             {
-                targetPlayer = other.transform;
-            }*/
+                targetPlayer = player;
+            }
         }
 
         private void OnTriggerExit(Collider other)
         {
-/*            if (other.GetComponent<PlayerMovement>() != null) ;
+            PlayerMoveController player = other.GetComponentInParent<PlayerMoveController>();
+            if (player != null)
             {
                 targetPlayer = null;
-            }*/
+            }
         }
     }
 }

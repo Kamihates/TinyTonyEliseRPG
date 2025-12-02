@@ -9,7 +9,9 @@ namespace TinyRPG.Enemies.Data
         [BoxGroup("Stats de base")]
         [Range(1.0f, 100.0f)] public float maxHealth = 100f;
         [BoxGroup("Stats de base")]
-        [Range(1.0f, 10.0f)] public float moveSpeed = 3f;
+        [Range(1.0f, 10.0f)] public float moveSpeed = 1f;
+        [BoxGroup("Stats de base")]
+        [Range(1.0f, 10.0f)] public float chaseSpeed = 4f;
 
         [BoxGroup("Combat")]
         [Range(5.0f, 100.0f)] public float detectionRange = 5f;
