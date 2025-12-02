@@ -4,17 +4,32 @@ using UnityEngine.InputSystem;
 
 public class PlayerMoveController : MonoBehaviour
 {
+    [SerializeField] private PlayerInputHandler _playerInputHandler;
+
     private Rigidbody _playerRb;
     private Vector2 _moveDirection;
 
+    // vitesse de déplacement
     [SerializeField] private float _moveSpeed = 1;
     private float _currentSpeed;
-
 
     private void Awake()
     {
         TryGetComponent(out _playerRb);
         _currentSpeed = _moveSpeed;
+    }
+
+    private void Start()
+    {
+        // abonnement
+        _playerInputHandler.OnMove += Move;
+        _playerInputHandler.OnSprint += Sprint;
+    }
+
+    private void OnDestroy()
+    {
+        _playerInputHandler.OnMove -= Move;
+        _playerInputHandler.OnSprint -= Sprint;
     }
 
     public void Move(Vector2 moveInput)
