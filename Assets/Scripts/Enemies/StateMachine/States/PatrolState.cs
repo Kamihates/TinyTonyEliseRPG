@@ -22,7 +22,10 @@ namespace TinyRPG.Enemies.StateMachine.States
 
         public PatrolState(Enemy e) => enemy = e;
 
-        public void OnEnter(){}
+        public void OnEnter()
+        {
+            enemy.animator.SetBool("isWalking", true);
+        }
 
         public void OnUpdate()
         {
@@ -57,6 +60,9 @@ namespace TinyRPG.Enemies.StateMachine.States
             }
         }
 
-        public void OnExit(){}
+        public void OnExit()
+        {
+            enemy.animator.SetBool("isWalking", false);
+        }
     }
 }

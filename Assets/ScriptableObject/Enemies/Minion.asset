@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Minion
   m_EditorClassIdentifier: 
   maxHealth: 100
-  moveSpeed: 1.5
+  moveSpeed: 1
   detectionRange: 5
   attackDamage: 10
   attackCooldown: 1.5

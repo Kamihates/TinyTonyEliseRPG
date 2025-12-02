@@ -7,6 +7,7 @@ using TinyRPG.Enemies.StateMachine;
 
 namespace TinyRPG.Enemies.Core
 {
+
     public class Enemy : MonoBehaviour
     {
         [NaughtyAttributes.Foldout("Stats")] public EnemyStats stats;
@@ -16,10 +17,13 @@ namespace TinyRPG.Enemies.Core
         public PlayerMovement targetPlayer { get; private set; }
         public EnemyStateMachine stateMachine { get; private set; }
 
+        public Animator animator { get; private set; }
+
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
             agent.speed = stats.moveSpeed;
+            animator = GetComponentInChildren<Animator>();
             stateMachine = new EnemyStateMachine();
         }
 
