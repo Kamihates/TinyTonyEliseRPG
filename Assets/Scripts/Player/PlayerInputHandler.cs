@@ -6,6 +6,7 @@ public class PlayerInputHandler : MonoBehaviour
 {
     public event Action<Vector2> OnMove;
     public event Action<bool> OnSprint;
+    public event Action OnAttack;
 
     public void OnMoveInput(InputAction.CallbackContext context)
     {
@@ -23,5 +24,15 @@ public class PlayerInputHandler : MonoBehaviour
         {
             OnSprint?.Invoke(false);
         }
+    }
+
+    public void Attack(InputAction.CallbackContext context)
+    {
+
+    }
+
+    public void Parry(InputAction.CallbackContext context)
+    {
+
     }
 }
