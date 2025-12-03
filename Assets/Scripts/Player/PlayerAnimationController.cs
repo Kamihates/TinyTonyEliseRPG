@@ -11,12 +11,16 @@ public class PlayerAnimationController : MonoBehaviour
         // abonnement
         _playerInputHandler.OnMove += SetWalkAnimation;
         _playerInputHandler.OnSprint += SetRunAnimation;
+        _playerInputHandler.OnAttack += SetAttackAnimation;
+        _playerInputHandler.OnParry += SetParryAnimation;
     }
 
     private void OnDestroy()
     {
         _playerInputHandler.OnMove -= SetWalkAnimation;
         _playerInputHandler.OnSprint -= SetRunAnimation;
+        _playerInputHandler.OnAttack -= SetAttackAnimation;
+        _playerInputHandler.OnParry -= SetParryAnimation;
     }
 
     public void SetWalkAnimation(Vector2 moveInputDirection)
@@ -27,5 +31,14 @@ public class PlayerAnimationController : MonoBehaviour
     public void SetRunAnimation(bool isRunning)
     {
         _animator.SetBool("isRunning", isRunning);
+    }
+
+    public void SetAttackAnimation()
+    {
+        _animator.SetTrigger("Attack");
+    }
+    public void SetParryAnimation()
+    {
+        _animator.SetTrigger("Parry");
     }
 }
