@@ -15,7 +15,9 @@ public class PlayerInputHandler : MonoBehaviour
     public void OnMoveInput(InputAction.CallbackContext context)
     {
         if (_canMove) 
-            OnMove?.Invoke(context.ReadValue<Vector2>());
+           OnMove?.Invoke(context.ReadValue<Vector2>());
+        else
+            OnMove?.Invoke(Vector2.zero);
     }
 
     public void OnSprintInput(InputAction.CallbackContext context)
@@ -33,11 +35,13 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext context)
     {
-        OnAttack?.Invoke();
+        if (context.performed) 
+            OnAttack?.Invoke();
     }
 
     public void Parry(InputAction.CallbackContext context)
     {
-        OnParry?.Invoke();
+        if (context.performed)
+            OnParry?.Invoke();
     }
 }
