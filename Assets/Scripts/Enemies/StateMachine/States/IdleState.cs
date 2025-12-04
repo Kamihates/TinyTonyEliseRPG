@@ -2,14 +2,15 @@
 /// État Idle d'un ennemi.
 ///
 /// Son rôle est de:
-/// - attendre qu'un joueur soit détecté
-/// - puis passer automatiquement en ChaseState
+/// - commencer en état Idle
+/// - vérifier si des waypoints sont disponibles pour passer en état Patrol
 ///
 /// Cet état est utilisé quand l'ennemi n'a pas encore commencé à patrouiller
 /// ou quand il n'a aucune autre action spécifique à exécuter.
 
-using UnityEngine;
 using TinyRPG.Enemies.Core;
+using UnityEditorInternal;
+using UnityEngine;
 
 namespace TinyRPG.Enemies.StateMachine.States
 {
@@ -23,8 +24,13 @@ namespace TinyRPG.Enemies.StateMachine.States
 
         public void OnUpdate()
         {
-            if (enemy.targetPlayer != null)
+            if(enemy.targetPlayer != null)
+            {
                 enemy.stateMachine.ChangeState(new ChaseState(enemy));
+                return;
+            }
+            
+            enemy.agent.SetDestination(enemy.startposition);
         }
 
         public void OnExit() { }

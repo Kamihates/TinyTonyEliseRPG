@@ -17,7 +17,8 @@ namespace TinyRPG.Enemies.StateMachine.States
 
         public void OnUpdate()
         {
-            if(enemy.targetPlayer == null) 
+            // Si l'ennemi n'a pas de cible, retourner à l'état de patrouille ou d'attente
+            if (enemy.targetPlayer == null) 
             {
                 // Si l'ennemi a des waypoints
                 if (enemy.waypoints != null && enemy.waypoints.Length > 0)
@@ -34,6 +35,11 @@ namespace TinyRPG.Enemies.StateMachine.States
 
             // Déplacer l'ennemi vers le joueur
             enemy.agent.SetDestination(enemy.targetPlayer.transform.position);
+
+            if(enemy.isPlayerIsInAttackArea)
+            {
+                enemy.stateMachine.ChangeState(new AttackState(enemy));
+            }
         }
 
         public void OnExit()
