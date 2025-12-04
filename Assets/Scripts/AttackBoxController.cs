@@ -7,6 +7,7 @@ public class AttackBoxController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        other.gameObject.GetComponent<HitDetection>()?.HitDetected(_damage);
+        if (other.gameObject.TryGetComponent(out HitDetection hitDetection))
+            hitDetection.HitDetected(_damage);
     }
 }
