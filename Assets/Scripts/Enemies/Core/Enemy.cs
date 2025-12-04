@@ -1,21 +1,41 @@
+using NaughtyAttributes;
+using System.Drawing;
+using TinyRPG.Enemies.Data;
+using TinyRPG.Enemies.StateMachine;
+using TinyRPG.Enemies.StateMachine.States;
 using UnityEngine;
 using UnityEngine.AI;
-using TinyRPG.Enemies.Data;
-using TinyRPG.Enemies.StateMachine.States;
-using TinyRPG.Enemies.StateMachine;
 //using TinyRPG.Player;
 
 namespace TinyRPG.Enemies.Core
 {
 
+/*    public enum EnemyArea
+    {
+        ChaseArea,
+        AttackArea
+    }
+
+    [System.Serializable]
+    public class EnemyTriggerArea
+    {
+        public EnemyArea areaType;
+    }*/
+
     public class Enemy : MonoBehaviour
     {
-        [NaughtyAttributes.Foldout("Stats")] public EnemyStats stats;
-        [Header("Patrol Waypoints")] public Transform[] waypoints;
+/*        public EnemyTriggerArea[] enemyTriggerAreas;*/
 
-        public NavMeshAgent agent { get; private set; }
-        public PlayerMoveController targetPlayer { get; private set; }
+        [field: SerializeField] public EnemyStats stats { get; private set; }
+        [field:SerializeField] public Transform[] waypoints { get; private set; }
+
+        public NavMeshAgent agent { get; set; }
+        public PlayerMoveController targetPlayer { get; set; }
+        //public PlayerMoveController targetPlayer { get; private set; }
         public EnemyStateMachine stateMachine { get; private set; }
+        [field:SerializeField, ReadOnly, Foldout("Debug")] public Vector3 startposition { get; private set; }
+
+        public bool isPlayerIsInAttackArea { get;  set; }
 
         public Animator animator { get; private set; }
 
@@ -25,6 +45,8 @@ namespace TinyRPG.Enemies.Core
             agent.speed = stats.moveSpeed;
             animator = GetComponentInChildren<Animator>();
             stateMachine = new EnemyStateMachine();
+
+            startposition = transform.position;
         }
 
         private void Start()
@@ -40,7 +62,7 @@ namespace TinyRPG.Enemies.Core
             stateMachine.OnUpdate();
         }
 
-        private void OnTriggerEnter(Collider other)
+/*        private void OnTriggerEnter(Collider other)
         {
             PlayerMoveController player = other.GetComponentInParent<PlayerMoveController>();
             if (player != null)
@@ -56,6 +78,7 @@ namespace TinyRPG.Enemies.Core
             {
                 targetPlayer = null;
             }
-        }
+
+        }*/
     }
 }
