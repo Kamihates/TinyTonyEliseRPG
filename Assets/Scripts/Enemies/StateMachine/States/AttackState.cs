@@ -8,12 +8,13 @@ namespace TinyRPG.Enemies.StateMachine.States
     public class AttackState : IEnemyState
     {
         private Enemy enemy;
+        private Coroutine attackCoroutine;
 
         public AttackState(Enemy e) => enemy = e;
 
         public void OnEnter() 
         {
-            enemy.StartCoroutine(AttackCD());
+            attackCoroutine = enemy.StartCoroutine(AttackCD());
         }
 
         public void OnUpdate()
@@ -27,7 +28,7 @@ namespace TinyRPG.Enemies.StateMachine.States
 
         public void OnExit() 
         { 
-            enemy.StopCoroutine(AttackCD());
+            enemy.StopCoroutine(attackCoroutine);
         }
 
         public IEnumerator AttackCD()
