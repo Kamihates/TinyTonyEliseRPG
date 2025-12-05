@@ -18,13 +18,14 @@ namespace TinyRPG.Enemies.StateMachine.States
     {
         private Enemy enemy;
         private int currentWaypoint = 0;
-        private int direction = 1; // 1 pour aller, -1 pour revenir 
+        private int direction = 1;
 
         public PatrolState(Enemy e) => enemy = e;
 
         public void OnEnter()
         {
             enemy.animator.SetBool("isWalking", true);
+            enemy.agent.SetDestination(enemy.waypoints[currentWaypoint].position);
         }
 
         public void OnUpdate()
@@ -37,26 +38,18 @@ namespace TinyRPG.Enemies.StateMachine.States
 
             if (enemy.waypoints == null || enemy.waypoints.Length == 0) return;
 
-            // On demande au NavMeshAgent d'aller vers le waypoint actuel
-            enemy.agent.SetDestination(enemy.waypoints[currentWaypoint].position);
 
-            // Si l'ennemi est suffisamment proche du waypoint,
-            // on passe au waypoint suivant (en respectant la direction)
-            if (Vector3.Distance(enemy.transform.position, enemy.waypoints[currentWaypoint].position) < 0.5f)
+            if (!enemy.agent.pathPending &&
+                enemy.agent.remainingDistance <= enemy.agent.stoppingDistance)
             {
                 currentWaypoint += direction;
 
-                // Si on arrive au dernier waypoint, on inverse la direction
                 if (currentWaypoint >= enemy.waypoints.Length - 1)
-                {
-                    direction = -1; 
-                }
-
-                // Si on revient au début, on repart vers l'avant
+                    direction = -1;
                 else if (currentWaypoint <= 0)
-                {
-                    direction = 1; 
-                }
+                    direction = 1;
+
+                enemy.agent.SetDestination(enemy.waypoints[currentWaypoint].position);
             }
         }
 
@@ -65,4 +58,5 @@ namespace TinyRPG.Enemies.StateMachine.States
             enemy.animator.SetBool("isWalking", false);
         }
     }
+
 }
