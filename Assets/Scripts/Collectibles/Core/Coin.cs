@@ -1,5 +1,4 @@
 using TinyRPG.Collectible.Core;
-using TinyRPG.Collectibles.Core;
 using UnityEngine;
 public class Coin : MonoBehaviour, ICollectible
 {
