@@ -1,14 +1,15 @@
 using UnityEngine;
 using TinyRPG.Enemies.Core;
 using System.Collections;
+using UnityEngine.InputSystem.XR.Haptics;
 
 namespace TinyRPG.Enemies.StateMachine.States
 {
-
-    public class AttackState : IEnemyState
+    public class AttackState : MonoBehaviour, IEnemyState
     {
+        
         private Enemy enemy;
-
+        private bool canAttack = true;
         public AttackState(Enemy e) => enemy = e;
 
         public void OnEnter() 
@@ -19,7 +20,7 @@ namespace TinyRPG.Enemies.StateMachine.States
         public void OnUpdate()
         {
            
-            if (!enemy.isPlayerIsInAttackArea)
+            if (!enemy.isPlayerIsInAttackArea && canAttack)
             {
                 enemy.stateMachine.ChangeState(new ChaseState(enemy));
             }
@@ -36,11 +37,21 @@ namespace TinyRPG.Enemies.StateMachine.States
             {
                 if (enemy.targetPlayer != null)
                 {
+                    canAttack = false;
                     enemy.animator.SetTrigger("attack");
-                    Debug.Log("Enemy inflicted " + enemy.stats.attackDamage + " damage to player.");
+
+                    
+                    if (enemy.AttackBox != null)
+                        enemy.AttackBox.SetActive(true);
                 }
 
                 yield return new WaitForSeconds(enemy.stats.attackCooldown);
+
+                canAttack = true;
+
+                if (enemy.AttackBox != null)
+                    enemy.AttackBox.SetActive(false);
+
             }
         }
     }

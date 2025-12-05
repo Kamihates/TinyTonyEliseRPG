@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 public class PlayerMoveController : MonoBehaviour
 {
     [SerializeField] private PlayerInputHandler _playerInputHandler;
+    private bool _canMove = true;
+    public bool CanMove { get => _canMove; set => _canMove = value; }
 
     private Rigidbody _playerRb;
     private Vector2 _moveDirection;
@@ -44,14 +46,22 @@ public class PlayerMoveController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 move = new Vector3(_moveDirection.x * _currentSpeed,0, _moveDirection.y * _currentSpeed);
+        if (!CanMove)
+        {
+            _playerRb.linearVelocity = Vector3.zero;
+            return;
+        }
+
+        //Vector3 move = new Vector3(_moveDirection.x, 0, _moveDirection.y);
+        //_playerRb.AddForce(move.normalized * _currentSpeed);
+
+        Vector3 move = new Vector3(_moveDirection.x * _currentSpeed, _playerRb.linearVelocity.y, _moveDirection.y * _currentSpeed);
         _playerRb.linearVelocity = move;
 
         if (_playerRb.linearVelocity != Vector3.zero)
         {
             Vector3 rotationMove = new Vector3(_playerRb.linearVelocity.x, 0, _playerRb.linearVelocity.z);
-            Quaternion targetRotation = Quaternion.LookRotation(rotationMove.normalized, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.3f);
+            transform.forward = rotationMove.normalized;
         }
     }
 }

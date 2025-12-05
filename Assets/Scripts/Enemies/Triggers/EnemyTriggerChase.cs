@@ -16,8 +16,7 @@ public class EnemyTriggerChase : MonoBehaviour
     {
 
         player = other.GetComponentInParent<PlayerMoveController>();
-
-        Debug.Log("detection" + other.name);    
+   
         if (player != null)
         {
             enemy.targetPlayer = player;
