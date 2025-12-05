@@ -1,9 +1,10 @@
 using UnityEngine;
 using NaughtyAttributes;
+using System.Xml.Linq;
 
 namespace TinyRPG.Enemies.Data
 {
-    [CreateAssetMenu(menuName = "Enemies/EnemyStats")]
+    [CreateAssetMenu(fileName = "New Enemy Data", menuName = "TinyRPG/Enemies/Enemies Data")]
     public class EnemyStats : ScriptableObject
     {
         [HorizontalLine(color: EColor.Black)]
@@ -16,7 +17,9 @@ namespace TinyRPG.Enemies.Data
 
         [HorizontalLine(color: EColor.Black)]
         [Foldout("Combat")]
-        [Range(5.0f, 100.0f)] public float detectionRange = 5f;
+        [Range(5.0f, 100.0f)] public float detectionRange = 10f;
+        [Foldout("Combat")]
+        [Range(5.0f, 100.0f)] public float attackRange = 10f;
         [Foldout("Combat")]
         [Range(1.0f, 100.0f)] public float attackDamage = 10f;
         [Foldout("Combat")]
