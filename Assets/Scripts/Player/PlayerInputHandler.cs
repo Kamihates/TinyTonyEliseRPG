@@ -9,15 +9,11 @@ public class PlayerInputHandler : MonoBehaviour
     public event Action OnAttack;
     public event Action OnParry;
 
-    private bool _canMove = true;
-    public bool CanMove { get => _canMove; set => _canMove = value; }
+    
 
     public void OnMoveInput(InputAction.CallbackContext context)
     {
-        if (_canMove) 
-           OnMove?.Invoke(context.ReadValue<Vector2>());
-        else
-            OnMove?.Invoke(Vector2.zero);
+        OnMove?.Invoke(context.ReadValue<Vector2>());
     }
 
     public void OnSprintInput(InputAction.CallbackContext context)

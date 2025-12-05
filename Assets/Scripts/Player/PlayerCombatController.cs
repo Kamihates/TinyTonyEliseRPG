@@ -5,6 +5,7 @@ public class PlayerCombatController : MonoBehaviour
 {
     [SerializeField] private PlayerInputHandler _playerInputHandler;
     [SerializeField] private HealthController _healthController;
+    [SerializeField] private PlayerMoveController _playerMoveController;
 
     [SerializeField] private float _AttackCoolDown;
     [SerializeField] private float _ParryCoolDown;
@@ -17,12 +18,17 @@ public class PlayerCombatController : MonoBehaviour
     private bool _canParry = true;
 
     private bool isParrying = false;
+    [SerializeField] private float _damage;
 
     private void Start()
     {
         _healthController.OnHitDetected += ReceiveAttack;
         _playerInputHandler.OnAttack += Attack;
         _playerInputHandler.OnParry += Parry;
+
+        _AttackCollider.TryGetComponent(out AttackBoxController attackBoxController);
+        if (attackBoxController != null)
+            attackBoxController.Damage = _damage;
     }
     private void OnDestroy()
     {
@@ -35,6 +41,7 @@ public class PlayerCombatController : MonoBehaviour
     {
         if (_canAttack)
         {
+            _playerMoveController.CanMove = false;
             _AttackCollider.SetActive(true);
             _currentCoolDownCoroutine = StartCoroutine(WaitForAttackCooldown());
         }
@@ -45,6 +52,7 @@ public class PlayerCombatController : MonoBehaviour
     {
         if (_canParry)
         {
+            _playerMoveController.CanMove = false;
             _canAttack = false;
             _canParry = false;
             isParrying = true;
@@ -70,6 +78,7 @@ public class PlayerCombatController : MonoBehaviour
         _canAttack = true;
         _AttackCollider.SetActive(false);
         _currentCoolDownCoroutine = null;
+        _playerMoveController.CanMove = true;
     }
 
     private IEnumerator WaitForParryCooldown()
@@ -79,5 +88,6 @@ public class PlayerCombatController : MonoBehaviour
         isParrying = false;
         _currentCoolDownCoroutine = null;
         _canAttack = true;
+        _playerMoveController.CanMove = true;
     }
 }

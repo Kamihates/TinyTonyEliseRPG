@@ -24,8 +24,12 @@ namespace TinyRPG.Enemies.Core
 
     public class Enemy : MonoBehaviour
     {
-/*        public EnemyTriggerArea[] enemyTriggerAreas;*/
+        /*        public EnemyTriggerArea[] enemyTriggerAreas;*/
 
+        [field: SerializeField] public GameObject AttackBox { get; private set; }
+
+        [SerializeField] private HealthController healthController;
+        [SerializeField] private AttackBoxController attackBoxController;
         [field: SerializeField] public EnemyStats stats { get; private set; }
         [field:SerializeField] public Transform[] waypoints { get; private set; }
 
@@ -55,6 +59,15 @@ namespace TinyRPG.Enemies.Core
                 stateMachine.ChangeState(new PatrolState(this));
             else
                 stateMachine.ChangeState(new IdleState(this));
+
+            healthController.OnHitDetected += ApplyDamage;
+            healthController.OnDeath += Death;
+            attackBoxController.Damage = stats.attackDamage;
+        }
+
+        private void OnDestroy()
+        {
+            healthController.OnHitDetected -= ApplyDamage;
         }
 
         private void Update()
@@ -62,23 +75,17 @@ namespace TinyRPG.Enemies.Core
             stateMachine.OnUpdate();
         }
 
-/*        private void OnTriggerEnter(Collider other)
+        private void Death()
         {
-            PlayerMoveController player = other.GetComponentInParent<PlayerMoveController>();
-            if (player != null)
-            {
-                targetPlayer = player;
-            }
+            stateMachine.ChangeState(new DeathState(this));
         }
 
-        private void OnTriggerExit(Collider other)
+        private void ApplyDamage(float damage)
         {
-            PlayerMoveController player = other.GetComponentInParent<PlayerMoveController>();
-            if (player != null)
-            {
-                targetPlayer = null;
-            }
+            healthController.TakeDamage(damage);
+        }
 
-        }*/
+
+
     }
 }

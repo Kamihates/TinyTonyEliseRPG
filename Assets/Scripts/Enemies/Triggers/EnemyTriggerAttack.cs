@@ -22,8 +22,6 @@ public class EnemyTriggerAttack : MonoBehaviour
     {
 
         player = other.GetComponentInParent<PlayerMoveController>();
-
-        Debug.Log("detection" + other.name);
         if (player != null)
         {
             enemy.isPlayerIsInAttackArea = true;
