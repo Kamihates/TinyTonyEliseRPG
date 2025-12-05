@@ -18,6 +18,7 @@ public class PlayerCombatController : MonoBehaviour
     private bool _canParry = true;
 
     private bool isParrying = false;
+    private bool isInvincible = false;
     [SerializeField] private float _damage;
 
     private void Start()
@@ -47,6 +48,11 @@ public class PlayerCombatController : MonoBehaviour
         }
     }
 
+    public void IsInvincible(float time)
+    {
+        isInvincible = true;
+        StartCoroutine(WaitForInvincibilityCooldown(time));
+    }
 
     public void Parry()
     {
@@ -66,7 +72,7 @@ public class PlayerCombatController : MonoBehaviour
     /// <param name="damage"></param>
     public void ReceiveAttack(float damage)
     {
-        if (!isParrying)
+        if (!isParrying && !isInvincible)
         {
             _healthController.TakeDamage(damage);
         }
@@ -80,6 +86,13 @@ public class PlayerCombatController : MonoBehaviour
         _currentCoolDownCoroutine = null;
         _playerMoveController.CanMove = true;
     }
+
+    private IEnumerator WaitForInvincibilityCooldown(float time)
+    {
+        yield return new WaitForSeconds(time);
+        isInvincible = false;
+    }
+
 
     private IEnumerator WaitForParryCooldown()
     {

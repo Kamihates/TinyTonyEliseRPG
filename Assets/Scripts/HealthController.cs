@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class HealthController : MonoBehaviour
 {
-    public event Action<float> OnDamageUpdate;
+    public Action<float> OnDamageUpdate;
+    public Action<float> OnLifeUpdate;
 
     public Action<float> OnHitDetected;
     public Action OnDeath;
@@ -36,7 +37,7 @@ public class HealthController : MonoBehaviour
     public void AddLife(float health)
     {
         _currentHealth += health;
-        OnDamageUpdate?.Invoke(CurrentHealth);
+        OnLifeUpdate?.Invoke(CurrentHealth);
     }
 
 }

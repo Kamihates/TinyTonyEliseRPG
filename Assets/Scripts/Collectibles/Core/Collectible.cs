@@ -6,9 +6,9 @@ using System.Collections;
 namespace TinyRPG.Collectibles.Core
 {
 
-    public class Collectible : MonoBehaviour, ICollectible
+    public class Collectible : MonoBehaviour
     {
-        private CollectibleData collectibleData;
+        [SerializeField] private CollectibleData collectibleData;
         private Collider col;
         private PlayerMoveController player;
         //private HealthController healthController;
@@ -27,26 +27,13 @@ namespace TinyRPG.Collectibles.Core
             player = other.GetComponentInParent<PlayerMoveController>();
             if (player != null)
             {
-                Collect(player);
+               // Collect(player);
                 Destroy(gameObject);
             }
         }
 
-        public void Collect(PlayerMoveController player)
-        {
-            switch(collectibleData.collectibleType)
-            {
-                case CollectibleData.CollectibleType.Coin:
-                    //player.AddGold(collectibleData.goldValue);
-                    break;
-                case CollectibleData.CollectibleType.HealthPotion:
-                    //healthController.AddLife(collectibleData.healthRestoreAmount);
-                    break;
-                case CollectibleData.CollectibleType.InvincibilityPotion:
-                    //StartCoroutine(ResetInvicibility(healthController, collectibleData.invincibilityDuration));
-                    break;
-            }
-        }
+
+
 
 /*        private IEnumerator ResetInvicibility(HealthController health, float duration)
         {
